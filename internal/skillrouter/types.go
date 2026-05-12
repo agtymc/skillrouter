@@ -1,6 +1,6 @@
 package skillrouter
 
-const AppVersion = "0.5.1b"
+const AppVersion = "0.5.2b"
 
 type Preset struct {
 	Name string `json:"name"`

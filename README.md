@@ -1,4 +1,4 @@
-# SkillRouter (v0.5.1b)
+# SkillRouter (v0.5.2b)
 
 SkillRouter is a small command-line tool that makes it faster to access and reuse skill files.
 It lets you register directories with skills as presets, browse them in an interactive menu, and copy the selected skill file into the current working directory.
@@ -115,4 +115,4 @@ Example:
 
 ## Project Status
 
-Current app version in CLI MOTD: `v0.5.1b`.
+Current app version in CLI MOTD: `v0.5.2b`.
