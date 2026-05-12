@@ -114,4 +114,4 @@ Example:
 
 ## Project Status
 
-Current app version in CLI MOTD: `v0.3.5b`.
+Current app version in CLI MOTD: `v0.4.1b`.
