@@ -41,6 +41,7 @@ Main flow:
 
 - `/set` - open interactive preset/skill selection and copy selected skill
 - `/addpreset` - add or update a preset (name + path)
+- `/delete preset-name` - delete the preset
 - `/help` - show command help
 - `/exit` - exit the program
 
