@@ -28,7 +28,7 @@ type SkillItem struct {
 	Path  string
 }
 
-const AppVersion = "0.3.5b"
+const AppVersion = "0.4.1b"
 
 func main() {
 	cwd, err := os.Getwd()
@@ -89,6 +89,24 @@ func runCommandLoop(cfg *Config, cfgPath, sandboxDir string) {
 		}
 		if cmd != "" {
 			history = append(history, cmd)
+		}
+		if strings.HasPrefix(cmd, "/delete") {
+			name := strings.TrimSpace(strings.TrimPrefix(cmd, "/delete"))
+			if name == "" {
+				printResult("Usage: /delete <preset-name>")
+				continue
+			}
+			deleted := deletePresetByName(cfg, name)
+			if !deleted {
+				printResult(fmt.Sprintf("Preset not found: %s", name))
+				continue
+			}
+			if err := saveConfig(cfgPath, *cfg); err != nil {
+				printResult(fmt.Sprintf("Error: failed to save config: %v", err))
+				continue
+			}
+			printResult(fmt.Sprintf("Preset deleted: %s", name))
+			continue
 		}
 
 		switch cmd {
@@ -157,6 +175,7 @@ func printHelp() {
 		"Available commands:",
 		"  /set       - choose preset and skill, then copy selected .md to current directory",
 		"  /addpreset - add a new preset (name + path)",
+		"  /delete    - delete preset by name, usage: /delete <preset-name>",
 		"  /help      - show this help",
 		"  /exit      - exit program",
 	)
@@ -398,7 +417,11 @@ func setSkillFlow(cfg Config, sandboxDir string) error {
 		if err := copyFile(src, dst); err != nil {
 			return err
 		}
-		printResult(fmt.Sprintf("Copied: %s -> %s", src, dst))
+		printResult(
+			"Copied",
+			fmt.Sprintf("   From: %s", src),
+			fmt.Sprintf("   To: %s", dst),
+		)
 		return nil
 	}
 }
@@ -598,6 +621,16 @@ func ensureDir(path string) error {
 		return fmt.Errorf("path is not a directory: %s", path)
 	}
 	return nil
+}
+
+func deletePresetByName(cfg *Config, name string) bool {
+	for i := range cfg.Presets {
+		if strings.EqualFold(cfg.Presets[i].Name, name) {
+			cfg.Presets = append(cfg.Presets[:i], cfg.Presets[i+1:]...)
+			return true
+		}
+	}
+	return false
 }
 
 func stty(args ...string) (string, error) {
