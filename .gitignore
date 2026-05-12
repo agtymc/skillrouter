@@ -1,0 +1,9 @@
+!files/
+out/
+target/
+
+# local IDE/project artifacts
+.idea/
+
+# local binaries
+target/skillrouter
